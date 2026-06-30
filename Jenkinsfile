@@ -4,7 +4,7 @@ pipeline {
         stage('Pull') {
             steps {
                 git branch: 'main', url: 'https://github.com/jambhulkarcloudblitz-alt/CDEC-studentapp.git'
-                //
+                
             }
         }
         stage('Build') {
@@ -38,7 +38,7 @@ pipeline {
         stage('Delivery') {
             steps {
                 echo "Deploy Success"
-                //
+                
             }
         }
 
