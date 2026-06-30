@@ -9,18 +9,19 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh '''cd backend
-                mvn clean package -DskipTests'''
-                //
+                sh '''cd backend 
+                    mvn clean package -DskipTests'''
+                
             }
         }
+        
         stage('Test') {
             steps {
-            sh '''cd backend
-            withSonarQubeEnv(credentialsId: 'secret-cred') {
-            mvn sonar:sonar -Dsonar.projectkey=studentapp'''
-        }
-        }       
+                 withSonarQubeEnv(credentialsId: 'secret-cred') {
+                     sh '''cd backend
+                   mvn sonar:sonar -Dsonar.projectkey=studentapp'''
+                     }
+             }       
     }
 
        
