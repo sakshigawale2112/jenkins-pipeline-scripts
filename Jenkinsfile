@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Pull') {
             steps {
-                git branch: 'main', url: 'https://github.com/sakshigawale2112/jenkins-pipeline-scripts.git'
+                git branch: 'main', url: 'https://github.com/jambhulkarcloudblitz-alt/CDEC-studentapp.git'
                 //
             }
         }
@@ -17,9 +17,11 @@ pipeline {
         
         stage('Test') {
             steps {
-                 withSonarQubeEnv(installationName: 'sonarqube' ,credentialsId: 'secret-cred') {
-                     sh '''cd backend
-                   mvn sonar:sonar -Dsonar.projectkey=studentapp'''
+                 withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'secret-cred') {
+                     sh '''
+                     cd backend
+                     mvn sonar:sonar -Dsonar.projectkey=studentapp
+                     '''
                      }
              }       
     }
@@ -28,11 +30,10 @@ pipeline {
         stage('Quality Gate') {
             steps {
                 timeout(10) {
-                waitForQualityGate abortPipeline: true, credentialsId: 'secret-cred'
-
-            }
+                waitForQualityGate abortPipeline: true
+                }
         }
-
+        }
 
         stage('Delivery') {
             steps {
