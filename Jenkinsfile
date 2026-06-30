@@ -37,9 +37,9 @@ pipeline {
              }
         }
 
-        stage('Delivery') {
+        stage('S3-Upload') {
             steps {
-                echo "Deploy Success"
+                sh 'aws s3 cp backend/target/student-registration-backend-0.0.1-SNAPSHOT.jar s3://gawale-bucket-12345/key'
                 
             }
          }
