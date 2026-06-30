@@ -7,11 +7,13 @@ pipeline {
                 
             }
         }
+        
         stage('Build') {
             steps {
-                sh '''cd backend 
-                    mvn clean package -DskipTests'''
-                
+                sh '''
+                    cd backend
+                    mvn clean package -DskipTests
+                '''
             }
         }
         
@@ -19,20 +21,20 @@ pipeline {
             steps {
                  withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'secret-cred') {
                      sh '''
-                     cd backend
-                     mvn sonar:sonar -Dsonar.projectkey=studentapp
+                         cd backend
+                         mvn sonar:sonar -Dsonar.projectkey=studentapp
                      '''
-                     }
-             }       
+                }
+           }       
     }
 
        
         stage('Quality Gate') {
             steps {
-                timeout(10) {
-                waitForQualityGate abortPipeline: true
+                timeout(time: 10, Unit: 'Minutes' ) {
+                    waitForQualityGate abortPipeline: true, credentialsId: 'secret-cred'
                 }
-        }
+             }
         }
 
         stage('Delivery') {
@@ -40,7 +42,7 @@ pipeline {
                 echo "Deploy Success"
                 
             }
-        }
+         }
 
 
     }
